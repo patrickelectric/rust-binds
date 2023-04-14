@@ -1,3 +1,5 @@
+#![feature(cfg_eval)]
+
 use rand::Rng;
 
 #[cfg(feature = "python")]
@@ -11,9 +13,10 @@ pub enum Material {
     Rubber,
 }
 
+#[cfg_eval]
+#[cfg_attr(feature = "python", pyo3::pyclass)]
 #[derive(Clone, Debug)]
 #[repr(C)]
-#[cfg_attr(feature = "python", pyclass)]
 pub struct Size2D {
     #[cfg_attr(feature = "python", pyo3(get))]
     pub width: f64,
@@ -21,9 +24,10 @@ pub struct Size2D {
     pub height: f64,
 }
 
+#[cfg_eval]
+#[cfg_attr(feature = "python", pyclass)]
 #[derive(Clone, Debug)]
 #[repr(C)]
-#[cfg_attr(feature = "python", pyclass)]
 pub struct Tire {
     #[cfg_attr(feature = "python", pyo3(get))]
     pub material: Material,
@@ -48,6 +52,7 @@ pub extern "C" fn create_random_tire() -> Tire {
 }
 
 #[cfg(feature = "python")]
+#[pymodule]
 fn bind_test(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<Tire>()?;
     m.add_class::<Size2D>()?;
