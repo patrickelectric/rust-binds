@@ -9,7 +9,7 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 libc = "0.2"
-pyo3 = { version = "0.18", features = ["abi3-py37", "extension-module", "multiple-pymethods"] }
+pyo3 = { version = "0.18", features = ["extension-module"] }
 rand = "0.8"
 
 
