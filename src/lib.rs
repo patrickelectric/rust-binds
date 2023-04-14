@@ -1,10 +1,11 @@
-use pyo3::prelude::*;
-use pyo3::wrap_pyfunction;
 use rand::Rng;
+
+#[cfg(feature = "python")]
+use pyo3::{prelude::*, wrap_pyfunction};
 
 #[derive(Clone, Debug)]
 #[repr(C)]
-#[pyclass]
+#[cfg_attr(feature = "python", pyclass)]
 pub enum Material {
     Plastic,
     Rubber,
@@ -12,28 +13,28 @@ pub enum Material {
 
 #[derive(Clone, Debug)]
 #[repr(C)]
-#[pyclass]
+#[cfg_attr(feature = "python", pyclass)]
 pub struct Size2D {
-    #[pyo3(get)]
+    #[cfg_attr(feature = "python", pyo3(get))]
     pub width: f64,
-    #[pyo3(get)]
+    #[cfg_attr(feature = "python", pyo3(get))]
     pub height: f64,
 }
 
 #[derive(Clone, Debug)]
 #[repr(C)]
-#[pyclass]
+#[cfg_attr(feature = "python", pyclass)]
 pub struct Tire {
-    #[pyo3(get)]
+    #[cfg_attr(feature = "python", pyo3(get))]
     pub material: Material,
-    #[pyo3(get)]
+    #[cfg_attr(feature = "python", pyo3(get))]
     pub pressure: f64,
-    #[pyo3(get)]
+    #[cfg_attr(feature = "python", pyo3(get))]
     pub size: Size2D,
 }
 
-#[pyfunction]
 #[no_mangle]
+#[cfg_attr(feature = "python", pyfunction)]
 pub extern "C" fn create_random_tire() -> Tire {
     let mut rng = rand::thread_rng();
     Tire {
@@ -46,7 +47,7 @@ pub extern "C" fn create_random_tire() -> Tire {
     }
 }
 
-#[pymodule]
+#[cfg(feature = "python")]
 fn bind_test(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<Tire>()?;
     m.add_class::<Size2D>()?;
