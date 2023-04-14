@@ -1,0 +1,17 @@
+[package]
+name = "bind_test"
+version = "0.1.0"
+edition = "2021"
+build = "src/build.rs"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+libc = "0.2"
+pyo3 = { version = "0.18", features = ["abi3-py37", "extension-module", "multiple-pymethods"] }
+rand = "0.8"
+
+
+[build-dependencies]
+cbindgen = "0.24"
