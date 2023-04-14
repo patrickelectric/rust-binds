@@ -47,7 +47,7 @@ pub extern "C" fn create_random_tire() -> Tire {
 }
 
 #[pymodule]
-fn rust_bindings(_py: Python, m: &PyModule) -> PyResult<()> {
+fn bind_test(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<Tire>()?;
     m.add_class::<Size2D>()?;
     m.add_class::<Material>()?;
