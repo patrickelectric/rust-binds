@@ -1,5 +1,3 @@
-#![feature(cfg_eval)]
-
 use rand::Rng;
 
 #[cfg(feature = "python")]
@@ -13,27 +11,20 @@ pub enum Material {
     Rubber,
 }
 
-#[cfg_eval]
-#[cfg_attr(feature = "python", pyo3::pyclass)]
 #[derive(Clone, Debug)]
 #[repr(C)]
+#[cfg_attr(feature = "python", pyclass(get_all, set_all))]
 pub struct Size2D {
-    #[cfg_attr(feature = "python", pyo3(get))]
     pub width: f64,
-    #[cfg_attr(feature = "python", pyo3(get))]
     pub height: f64,
 }
 
-#[cfg_eval]
-#[cfg_attr(feature = "python", pyclass)]
 #[derive(Clone, Debug)]
 #[repr(C)]
+#[cfg_attr(feature = "python", pyclass(get_all, set_all))]
 pub struct Tire {
-    #[cfg_attr(feature = "python", pyo3(get))]
     pub material: Material,
-    #[cfg_attr(feature = "python", pyo3(get))]
     pub pressure: f64,
-    #[cfg_attr(feature = "python", pyo3(get))]
     pub size: Size2D,
 }
 
