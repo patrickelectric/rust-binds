@@ -1,4 +1,6 @@
 /target
+macros/target
+macros/Cargo.lock
 bindings.h
 bind_test
 bind_test.egg-info
