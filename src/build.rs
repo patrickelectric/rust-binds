@@ -7,7 +7,12 @@ fn main() {
     let bindings_file = std::path::Path::new(&target_dir)
         .join(&profile)
         .join("bindings.h");
-    cbindgen::generate(crate_dir)
+    cbindgen::Builder::new()
+        .with_crate(crate_dir)
+        .with_parse_deps(false)
+        .with_language(cbindgen::Language::Cxx)
+        .with_parse_expand(&["bind_test"])
+        .generate()
         .expect("Unable to generate bindings")
         .write_to_file(bindings_file);
 }

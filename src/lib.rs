@@ -3,52 +3,36 @@ use rand::Rng;
 #[cfg(feature = "python")]
 use pyo3::{prelude::*, wrap_pyfunction};
 
-#[derive(Clone, Debug)]
-#[repr(C)]
-#[cfg_attr(feature = "python", pyclass)]
-pub enum Material {
-    Plastic,
-    Rubber,
-}
+use macros::export_cpy;
 
-#[derive(Clone, Debug)]
-#[repr(C)]
-#[cfg_attr(feature = "python", pyclass(get_all, set_all))]
-pub struct Size2D {
-    pub width: f64,
-    pub height: f64,
-}
-
-#[derive(Clone, Debug)]
-#[repr(C)]
-#[cfg_attr(feature = "python", pyclass(get_all, set_all))]
-pub struct Tire {
-    pub material: Material,
-    pub pressure: f64,
-    pub size: Size2D,
-}
-
-#[no_mangle]
-#[cfg_attr(feature = "python", pyfunction)]
-pub extern "C" fn create_random_tire() -> Tire {
-    let mut rng = rand::thread_rng();
-    Tire {
-        material: Material::Plastic,
-        pressure: rng.gen_range(30.0..60.0),
-        size: Size2D {
-            width: rng.gen_range(5.0..10.0),
-            height: rng.gen_range(10.0..20.0),
-        },
+export_cpy!(
+    enum Material {
+        Plastic,
+        Rubber,
     }
-}
 
-#[cfg(feature = "python")]
-#[pymodule]
-fn bind_test(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_class::<Tire>()?;
-    m.add_class::<Size2D>()?;
-    m.add_class::<Material>()?;
-    m.add_wrapped(wrap_pyfunction!(create_random_tire))?;
+    struct Size2D {
+        width: f64,
+        height: f64,
+    }
 
-    Ok(())
-}
+    struct Tire {
+        material: Material,
+        pressure: f64,
+        size: Size2D,
+    }
+
+    fn create_random_tire() -> Tire {
+        let mut rng = rand::thread_rng();
+        Tire {
+            material: Material::Plastic,
+            pressure: rng.gen_range(30.0..60.0),
+            size: Size2D {
+                width: rng.gen_range(5.0..10.0),
+                height: rng.gen_range(10.0..20.0),
+            },
+        }
+    }
+
+    module_name: bind_test
+);
