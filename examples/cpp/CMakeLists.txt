@@ -16,9 +16,17 @@ add_custom_target(bind_test
 
 add_dependencies(${PROJECT_NAME} bind_test)
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set(LIB_EXT "dylib")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    set(LIB_EXT "dll")
+else()
+    set(LIB_EXT "so")
+endif()
+
 target_link_libraries(
     ${PROJECT_NAME}
-        "${RUST_OUT_DIR}/libbind_test.so"
+        "${RUST_OUT_DIR}/libbind_test.${LIB_EXT}"
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON)
