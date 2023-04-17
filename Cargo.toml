@@ -14,7 +14,7 @@ rand = "0.8"
 macros = { path = "macros" }
 
 [build-dependencies]
-cbindgen = "0.24"
+cbindgen = "0.21"
 
 [features]
 python = ["pyo3"]
